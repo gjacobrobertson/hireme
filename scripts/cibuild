@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+
+npm ci --prefer-offline --no-audit
+scripts/test
+npm run build

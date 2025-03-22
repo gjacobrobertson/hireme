@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euo pipefail
+
+flock node_modules -c 'npm install'
