@@ -1,3 +1,9 @@
+---
+import "normalize.css";
+const defaultTitle = "Jacob Robertson";
+const { title = defaultTitle } = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -5,7 +11,7 @@
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <title>{title}</title>
   </head>
   <body>
     <slot />
@@ -13,10 +19,26 @@
 </html>
 
 <style>
-  html,
+  * {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --font-family-humanist:
+      Seravek, "Gill Sans Nova", Ubuntu, Calibri, "DejaVu Sans",
+      source-sans-pro, sans-serif;
+  }
   body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
+    font-family: var(--font-family-humanist);
+  }
+
+  :global(.visually-hidden) {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
   }
 </style>

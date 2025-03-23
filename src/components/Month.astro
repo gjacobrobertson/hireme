@@ -1,0 +1,23 @@
+---
+interface Props {
+  datetime: string;
+}
+
+const { datetime } = Astro.props;
+
+const pattern = /^(?<year>\d{4})-(?<month>\d{2})$/;
+
+const match = datetime.match(pattern);
+
+if (!match) throw Error("Month datetime must match YYYY-MM");
+
+const { year, month } = match.groups!;
+const date = new Date(Number(year), Number(month) - 1);
+const formatter = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+});
+const text = formatter.format(date);
+---
+
+<time datetime={datetime}>{text}</time>
