@@ -27,3 +27,4 @@ pnpm-debug.log*
 # local-only files
 *.local
 docker-compose.override.yaml
+docker-compose.dev.yaml

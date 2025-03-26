@@ -1,0 +1,4 @@
+services:
+  web:
+    volumes:
+      - ./dist:/opt/app/dist
