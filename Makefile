@@ -1,45 +1,57 @@
+BUILD_ENV ?= dev
+
+COMPOSE_TEMPLATE_FILE := docker-compose.template.yaml
+COMPOSE_OVERRIDE_FILE := docker-compose.$(BUILD_ENV).yaml
+COMPOSE_FLAGS := -f docker-compose.yaml -f $(COMPOSE_OVERRIDE_FILE)
+COMPOSE := docker compose $(COMPOSE_FLAGS)
+
+# Ensure COMPOSE_OVERRIDE_FILE exists if it is included in COMPOSE_FLAGS
+COMPOSE_TARGETS := $(word 2,$(findstring $(strip -f $(COMPOSE_OVERRIDE_FILE)),$(strip $(COMPOSE_FLAGS))))
+$(COMPOSE_OVERRIDE_FILE):
+	cp $(COMPOSE_TEMPLATE_FILE) $(COMPOSE_OVERRIDE_FILE)
+
 .PHONY: build
-build:
-	docker compose build
+build: $(COMPOSE_TARGETS)
+	$(COMPOSE) build
 
 .PHONY: up
 up: build
-	docker compose up --detach
+	$(COMPOSE) up --detach
 
 .PHONY: down
-down:
-	docker compose down --remove-orphans
+down: $(COMPOSE_TARGETS)
+	$(COMPOSE) down --remove-orphans
 
 .PHONY: clean
-clean:
-	docker compose down --remove-orphans --volumes
+clean: $(COMPOSE_TARGETS)
+	$(COMPOSE) down --remove-orphans --volumes
 	rm -rf dist
 	rm -rf node_modules
 
 .PHONY: status
-status:
-	docker compose ps --all
+status: $(COMPOSE_TARGETS)
+	$(COMPOSE) ps --all
 
 .PHONY: shell
 shell: up
-	docker compose exec web bash
+	$(COMPOSE) exec web bash
 
 .PHONY: bootstrap
 bootstrap: up
-	docker compose exec web scripts/bootstrap
+	$(COMPOSE) exec web scripts/bootstrap
 
 .PHONY: update
 update: up
-	docker compose exec web scripts/update
+	$(COMPOSE) exec web scripts/update
 
 .PHONY: setup
 setup: up
-	docker compose exec web scripts/setup
+	$(COMPOSE) exec web scripts/setup
 
 .PHONY: test
 test: up
-	docker compose exec web scripts/test
+	$(COMPOSE) exec web scripts/test
 
 .PHONY: cibuild
 cibuild: up
-	docker compose exec web scripts/cibuild
+	$(COMPOSE) exec web scripts/cibuild

@@ -1,0 +1,13 @@
+services:
+  web:
+    build:
+      target: dev
+    ports:
+      - 127.0.0.1:4321:4321
+    volumes:
+      - .:/opt/app
+      - npm_cache:/root/.npm
+      - node_modules:/opt/app/node_modules
+volumes:
+  npm_cache:
+  node_modules:

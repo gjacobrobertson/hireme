@@ -8,4 +8,4 @@ FROM dev AS build
 
 COPY . .
 
-RUN ["scripts/build"]
+CMD ["sleep", "infinity"]
