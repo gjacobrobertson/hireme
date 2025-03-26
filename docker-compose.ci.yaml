@@ -2,6 +2,3 @@ services:
   web:
     volumes:
       - ./dist:/opt/app/dist
-volumes:
-  npm_cache:
-  node_modules:
